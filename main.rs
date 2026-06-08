@@ -61,14 +61,13 @@ fn wasmi_coremark(wasm: &[u8]) -> f32 {
         .expect("Wasmi: failed to define `clock_ms` host function");
     let module = wasmi::Module::new(store.engine(), wasm)
         .expect("Wasmi: failed to compile and validate coremark Wasm binary");
-    let result = linker
+    linker
         .instantiate_and_start(&mut store, &module)
         .expect("Wasmi: failed to start Wasm module instance")
         .get_typed_func::<(), f32>(&mut store, "run")
         .expect("Wasmi: could not find \"run\" function export")
         .call(&mut store, ())
-        .expect("Wasmi: failed to execute \"run\" function");
-    result.into()
+        .expect("Wasmi: failed to execute \"run\" function")
 }
 
 #[cfg(feature = "wasmi-v1")]
@@ -81,14 +80,13 @@ fn wasmi_v1_coremark(wasm: &[u8]) -> f32 {
         .expect("Wasmi: failed to define `clock_ms` host function");
     let module = wasmi::Module::new(store.engine(), wasm)
         .expect("Wasmi: failed to compile and validate coremark Wasm binary");
-    let result = linker
+    linker
         .instantiate_and_start(&mut store, &module)
         .expect("Wasmi: failed to start Wasm module instance")
         .get_typed_func::<(), f32>(&mut store, "run")
         .expect("Wasmi: could not find \"run\" function export")
         .call(&mut store, ())
-        .expect("Wasmi: failed to execute \"run\" function");
-    result.into()
+        .expect("Wasmi: failed to execute \"run\" function")
 }
 
 #[cfg(feature = "stitch")]
