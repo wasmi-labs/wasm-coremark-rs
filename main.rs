@@ -146,6 +146,8 @@ fn main() {
             let runtime = match engine {
                 #[cfg(feature = "wasmtime")]
                 "wasmtime" => wasmtime_coremark,
+                #[cfg(feature = "winch")]
+                "winch" => winch_coremark,
                 #[cfg(feature = "wasmi")]
                 "wasmi" => wasmi_coremark,
                 #[cfg(feature = "wasmi-v1")]
