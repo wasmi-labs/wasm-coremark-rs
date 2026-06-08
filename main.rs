@@ -87,7 +87,6 @@ fn stitch_coremark(wasm: &[u8]) -> f32 {
 #[cfg(feature = "wasm3")]
 fn wasm3_coremark(wasm: &[u8]) -> f32 {
     use wasm3::{Environment, Module};
-
     let env = Environment::new().expect("Wasm3: failed to create execution environment");
     let rt = env
         .create_runtime(2048)
