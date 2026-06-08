@@ -9,6 +9,13 @@ wasmtime and wasmi.
 usage: bm [wasmtime|winch|pulley|wasm3|wasmi|wasmi-v1|stitch: string] [times: number]
 ```
 
+## Create Features
+
+The Wasmtime dependencies are disabled by default to keep compiled times down.  
+Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate feature
+
+**Example:** `cargo run --release -F wasmtime`.
+
 ## CoreMark
 
 ### Scores (Apple M2 Pro)
