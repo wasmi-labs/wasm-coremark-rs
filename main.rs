@@ -1,3 +1,5 @@
+use anyhow::Context as _;
+
 fn clock_ms() -> u32 {
     use std::time::Instant;
     static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
@@ -6,22 +8,48 @@ fn clock_ms() -> u32 {
     elapsed.as_millis() as u32
 }
 
-#[cfg(feature = "wasmtime")]
-fn wasmtime_coremark(wasm: &[u8]) -> f32 {
-    let mut store = <wasmtime::Store<()>>::default();
+#[cfg(any(feature = "wasmtime", feature = "winch"))]
+fn wasmtime_coremark_impl(strategy: wasmtime::Strategy, wasm: &[u8]) -> anyhow::Result<f32> {
+    let mut config = wasmtime::Config::default();
+    config.strategy(strategy);
+    let engine = wasmtime::Engine::new(&config)
+        .map_err(anyhow::Error::from)
+        .context("failed to create engine")?;
+    let mut store = <wasmtime::Store<()>>::new(&engine, ());
     let mut linker = wasmtime::Linker::new(store.engine());
     linker
         .func_wrap("env", "clock_ms", clock_ms)
-        .expect("Wasmtime: failed to define `clock_ms` host function");
+        .map_err(anyhow::Error::from)
+        .context("failed to define `clock_ms` host function")?;
     let module = wasmtime::Module::new(store.engine(), wasm)
-        .expect("Wasmtime: failed to compile and validate coremark Wasm binary");
-    linker
+        .map_err(anyhow::Error::from)
+        .context("failed to compile and validate coremark Wasm binary")?;
+    let run = linker
         .instantiate(&mut store, &module)
-        .expect("Wasmtime: failed to instantiate coremark Wasm module")
+        .map_err(anyhow::Error::from)
+        .context("failed to instantiate coremark Wasm module")?
         .get_typed_func::<(), f32>(&mut store, "run")
-        .expect("Wasmtime: could not find \"run\" function export")
+        .map_err(anyhow::Error::from)
+        .context("could not find \"run\" function export")?;
+    let result = run
         .call(&mut store, ())
-        .expect("Wasmtime: failed to execute \"run\" function")
+        .map_err(anyhow::Error::from)
+        .context("failed to execute \"run\" function")?;
+    Ok(result)
+}
+
+#[cfg(feature = "wasmtime")]
+fn wasmtime_coremark(wasm: &[u8]) -> f32 {
+    wasmtime_coremark_impl(wasmtime::Strategy::Auto, wasm)
+        .context("Wasmtime")
+        .unwrap()
+}
+
+#[cfg(feature = "winch")]
+fn winch_coremark(wasm: &[u8]) -> f32 {
+    wasmtime_coremark_impl(wasmtime::Strategy::Winch, wasm)
+        .with_context("Winch")
+        .unwrap()
 }
 
 #[cfg(feature = "wasmi")]

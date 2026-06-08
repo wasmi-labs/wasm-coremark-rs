@@ -13,6 +13,7 @@ wasmi = { git = "https://github.com/wasmi-labs/wasmi", branch = "rf-accumulator-
 wasmtime = { version = "45.0.0", optional = true }
 makepad-stitch = { version = "0.1", optional = true }
 wasmi-v1 = { package = "wasmi", version = "1.0.9", optional = true }
+anyhow = "1"
 
 [dependencies.wasm3]
 git = "https://github.com/robbepop/wasm3-rs.git"
@@ -30,3 +31,5 @@ wasmi = ["dep:wasmi"]
 wasmi-v1 = ["dep:wasmi-v1"]
 stitch = ["dep:makepad-stitch"]
 wasm3 = ["dep:wasm3"]
+wasmtime = ["dep:wasmtime"]
+winch = ["dep:wasmtime"]
