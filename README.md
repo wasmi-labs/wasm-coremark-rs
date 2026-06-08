@@ -11,12 +11,6 @@ usage: bm [wasmitime|wasm3|wasmi: string] [times: number]
 
 ## CoreMark
 
-### Test Machine
-
-| CPU Model                           | CPU Speed | RAM Speed | CPU Cores | MEM  |
-|-------------------------------------|-----------|-----------|-----------|------|
-| AMD Ryzen 9 5900X 12-Core Processor | 2061.209  | 3200 MT/S | 24        | 64GB |
-
 ### Results (Apple M2 Pro)
 
 | Runtime  | Version         | Score |
