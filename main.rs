@@ -156,7 +156,7 @@ fn wasm3_coremark(wasm: &[u8]) -> f32 {
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
-    let help = || println!("usage: {} [wasmtime|wasm3|wasmi: string]", args[0]);
+    let help = || println!("usage: {} [wasmtime|winch|pulley|wasm3|wasmi|wasmi-v1|stitch: string]", args[0]);
     let coremark_wasm = include_bytes!("coremark-minimal.wasm");
 
     match args.len() {

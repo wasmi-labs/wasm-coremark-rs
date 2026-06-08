@@ -6,7 +6,7 @@ wasmtime and wasmi.
 ## Usage
 
 ```
-usage: bm [wasmitime|wasm3|wasmi|wasmi-v1|stitch: string] [times: number]
+usage: bm [wasmtime|winch|pulley|wasm3|wasmi|wasmi-v1|stitch: string] [times: number]
 ```
 
 ## CoreMark
