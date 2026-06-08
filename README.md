@@ -16,6 +16,7 @@ usage: bm [wasmitime|wasm3|wasmi|wasmi-v1|stitch: string] [times: number]
 | Runtime  | Version         | Score |
 |:---------|----------------:|------:|
 | Wasmtime | `v45`           | 30686 |
+| Winch    | `v45`           | 12846 |
 | Wasm3    | `v0.5`          |  2919 |
 | Wasmi    | `v2.0.0-beta.3` |  2382 |
 | Stitch   | `v0.1`          |  2223 |
