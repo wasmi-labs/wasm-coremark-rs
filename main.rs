@@ -9,10 +9,26 @@ fn clock_ms() -> u32 {
     elapsed.as_millis() as u32
 }
 
-#[cfg(any(feature = "wasmtime", feature = "winch"))]
-fn wasmtime_coremark_impl(strategy: wasmtime::Strategy, wasm: &[u8]) -> anyhow::Result<f32> {
+pub enum WasmtimeBackend {
+    Wasmtime,
+    Winch,
+    Pulley,
+}
+
+#[cfg(any(feature = "wasmtime", feature = "winch", feature = "pulley"))]
+fn wasmtime_coremark_impl(backend: WasmtimeBackend, wasm: &[u8]) -> anyhow::Result<f32> {
     let mut config = wasmtime::Config::default();
+    let strategy = match backend {
+        WasmtimeBackend::Winch => wasmtime::Strategy::Winch,
+        WasmtimeBackend::Pulley | WasmtimeBackend::Wasmtime => wasmtime::Strategy::Cranelift,
+    };
     config.strategy(strategy);
+    if matches!(backend, WasmtimeBackend::Pulley) {
+        config
+            .target("pulley64")
+            .map_err(anyhow::Error::from)
+            .context("failed to set target to `pulley64`")?;
+    }
     let engine = wasmtime::Engine::new(&config)
         .map_err(anyhow::Error::from)
         .context("failed to create engine")?;
@@ -41,15 +57,22 @@ fn wasmtime_coremark_impl(strategy: wasmtime::Strategy, wasm: &[u8]) -> anyhow::
 
 #[cfg(feature = "wasmtime")]
 fn wasmtime_coremark(wasm: &[u8]) -> f32 {
-    wasmtime_coremark_impl(wasmtime::Strategy::Auto, wasm)
+    wasmtime_coremark_impl(WasmtimeBackend::Wasmtime, wasm)
         .context("Wasmtime")
         .unwrap()
 }
 
 #[cfg(feature = "winch")]
 fn winch_coremark(wasm: &[u8]) -> f32 {
-    wasmtime_coremark_impl(wasmtime::Strategy::Winch, wasm)
+    wasmtime_coremark_impl(WasmtimeBackend::Winch, wasm)
         .context("Winch")
+        .unwrap()
+}
+
+#[cfg(feature = "pulley")]
+fn pulley_coremark(wasm: &[u8]) -> f32 {
+    wasmtime_coremark_impl(WasmtimeBackend::Pulley, wasm)
+        .context("Pulley")
         .unwrap()
 }
 
@@ -149,6 +172,8 @@ fn main() {
                 "wasmtime" => wasmtime_coremark,
                 #[cfg(feature = "winch")]
                 "winch" => winch_coremark,
+                #[cfg(feature = "pulley")]
+                "pulley" => pulley_coremark,
                 #[cfg(feature = "wasmi")]
                 "wasmi" => wasmi_coremark,
                 #[cfg(feature = "wasmi-v1")]

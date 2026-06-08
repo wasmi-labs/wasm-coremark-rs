@@ -21,6 +21,7 @@ usage: bm [wasmitime|wasm3|wasmi|wasmi-v1|stitch: string] [times: number]
 | Wasmi    | `v2.0.0-beta.3` | Interpreter |  2382 |
 | Stitch   | `v0.1`          | Interpreter |  2223 |
 | Wasmi    | `v1.0.9`        | Interpreter |  1972 |
+| Pulley   | `v45`           | Interpreter |  1710 |
 
 The `coremark-minimal.wasm` we are using here does not produce text output like [coremark][1], just the final test result. 
 
