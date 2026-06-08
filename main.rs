@@ -1,3 +1,4 @@
+#[cfg(any(feature = "wasmtime", feature = "winch"))]
 use anyhow::Context as _;
 
 fn clock_ms() -> u32 {
