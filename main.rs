@@ -6,6 +6,7 @@ fn clock_ms() -> u32 {
     elapsed.as_millis() as u32
 }
 
+#[cfg(feature = "wasmtime")]
 fn wasmtime_coremark(wasm: &[u8]) -> f32 {
     let mut store = <wasmtime::Store<()>>::default();
     let mut linker = wasmtime::Linker::new(store.engine());
@@ -23,6 +24,7 @@ fn wasmtime_coremark(wasm: &[u8]) -> f32 {
         .expect("Wasmtime: failed to execute \"run\" function")
 }
 
+#[cfg(feature = "wasmi")]
 fn wasmi_coremark(wasm: &[u8]) -> f32 {
     let mut store = <wasmi::Store<()>>::default();
     let mut linker = wasmi::Linker::new(store.engine());
@@ -32,9 +34,7 @@ fn wasmi_coremark(wasm: &[u8]) -> f32 {
     let module = wasmi::Module::new(store.engine(), wasm)
         .expect("Wasmi: failed to compile and validate coremark Wasm binary");
     let result = linker
-        .instantiate(&mut store, &module)
-        .expect("Wasmi: failed to instantiate coremark Wasm module")
-        .ensure_no_start(&mut store)
+        .instantiate_and_start(&mut store, &module)
         .expect("Wasmi: failed to start Wasm module instance")
         .get_typed_func::<(), f32>(&mut store, "run")
         .expect("Wasmi: could not find \"run\" function export")
@@ -43,6 +43,48 @@ fn wasmi_coremark(wasm: &[u8]) -> f32 {
     result.into()
 }
 
+#[cfg(feature = "wasmi-v1")]
+fn wasmi_v1_coremark(wasm: &[u8]) -> f32 {
+    use wasmi_v1 as wasmi;
+    let mut store = <wasmi::Store<()>>::default();
+    let mut linker = wasmi::Linker::new(store.engine());
+    linker
+        .func_wrap("env", "clock_ms", clock_ms)
+        .expect("Wasmi: failed to define `clock_ms` host function");
+    let module = wasmi::Module::new(store.engine(), wasm)
+        .expect("Wasmi: failed to compile and validate coremark Wasm binary");
+    let result = linker
+        .instantiate_and_start(&mut store, &module)
+        .expect("Wasmi: failed to start Wasm module instance")
+        .get_typed_func::<(), f32>(&mut store, "run")
+        .expect("Wasmi: could not find \"run\" function export")
+        .call(&mut store, ())
+        .expect("Wasmi: failed to execute \"run\" function");
+    result.into()
+}
+
+#[cfg(feature = "stitch")]
+fn stitch_coremark(wasm: &[u8]) -> f32 {
+    use makepad_stitch as stitch;
+    let engine = stitch::Engine::new();
+    let mut store = <stitch::Store>::new(engine);
+    let mut linker = stitch::Linker::new();
+    linker.define("env", "clock_ms", stitch::Func::wrap(&mut store, clock_ms));
+    let module = stitch::Module::new(store.engine(), wasm)
+        .expect("Wasmi: failed to compile and validate coremark Wasm binary");
+    let mut results = [stitch::Val::F32(0.0); 1];
+    linker
+        .instantiate(&mut store, &module)
+        .expect("Wasmi: failed to start Wasm module instance")
+        .exported_func("run")
+        .expect("Wasmi: could not find \"run\" function export")
+        .call(&mut store, &[], &mut results[..])
+        .expect("Wasmi: failed to execute \"run\" function");
+    let [result] = results;
+    result.to_f32().unwrap()
+}
+
+#[cfg(feature = "wasm3")]
 fn wasm3_coremark(wasm: &[u8]) -> f32 {
     use wasm3::{Environment, Module};
 
@@ -76,13 +118,21 @@ fn main() {
                 "Running Coremark 1.0 using {}... [should take 12..20 seconds]",
                 engine
             );
-
-            match engine {
-                "wasmtime" => println!("Result: {}", wasmtime_coremark(coremark_wasm)),
-                "wasm3" => println!("Result: {}", wasm3_coremark(coremark_wasm)),
-                "wasmi" => println!("Result: {}", wasmi_coremark(coremark_wasm)),
-                _ => help(),
-            }
+            let runtime = match engine {
+                #[cfg(feature = "wasmtime")]
+                "wasmtime" => wasmtime_coremark,
+                #[cfg(feature = "wasmi")]
+                "wasmi" => wasmi_coremark,
+                #[cfg(feature = "wasmi-v1")]
+                "wasmi-v1" => wasmi_v1_coremark,
+                #[cfg(feature = "stitch")]
+                "stitch" => stitch_coremark,
+                #[cfg(feature = "wasm3")]
+                "wasm3" => wasm3_coremark,
+                _ => return help(),
+            };
+            let result = runtime(coremark_wasm);
+            println!("Result: {result}");
         }
         _ => help(),
     }

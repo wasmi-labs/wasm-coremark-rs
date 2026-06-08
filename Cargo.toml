@@ -9,14 +9,24 @@ name = "bm"
 path = "main.rs"
 
 [dependencies]
-wasmi = "0.32.0-beta.16"
-wasmtime = "20.0.0"
+wasmi = { git = "https://github.com/wasmi-labs/wasmi", branch = "rf-accumulator-based-interpreter-arch", default-features = false, optional = true }
+wasmtime = { version = "45.0.0", optional = true }
+makepad-stitch = { version = "0.1", optional = true }
+wasmi-v1 = { package = "wasmi", version = "1.0.9", optional = true }
 
 [dependencies.wasm3]
 git = "https://github.com/robbepop/wasm3-rs.git"
 branch = "rf-fix-wasm3-rs"
 features = ["build-bindgen"]
+optional = true
 
 [profile.release]
 lto = "fat"
 codegen-units = 1
+
+[features]
+default = ["wasmi", "wasmi-v1", "stitch", "wasm3"]
+wasmi = ["dep:wasmi"]
+wasmi-v1 = ["dep:wasmi-v1"]
+stitch = ["dep:makepad-stitch"]
+wasm3 = ["dep:wasm3"]
