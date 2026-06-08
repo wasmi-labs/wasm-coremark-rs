@@ -11,16 +11,16 @@ usage: bm [wasmitime|wasm3|wasmi|wasmi-v1|stitch: string] [times: number]
 
 ## CoreMark
 
-### Results (Apple M2 Pro)
+### Scores (Apple M2 Pro)
 
-| Runtime  | Version         | Score |
-|:---------|----------------:|------:|
-| Wasmtime | `v45`           | 30686 |
-| Winch    | `v45`           | 12846 |
-| Wasm3    | `v0.5`          |  2919 |
-| Wasmi    | `v2.0.0-beta.3` |  2382 |
-| Stitch   | `v0.1`          |  2223 |
-| Wasmi    | `v1.0.9`        |  1972 |
+| Runtime  | Version         | Type        | Score |
+|:---------|----------------:|:-----------:|------:|
+| Wasmtime | `v45`           | JIT         | 30686 |
+| Winch    | `v45`           | JIT         | 12846 |
+| Wasm3    | `v0.5`          | Interpreter |  2919 |
+| Wasmi    | `v2.0.0-beta.3` | Interpreter |  2382 |
+| Stitch   | `v0.1`          | Interpreter |  2223 |
+| Wasmi    | `v1.0.9`        | Interpreter |  1972 |
 
 The `coremark-minimal.wasm` we are using here does not produce text output like [coremark][1], just the final test result. 
 
