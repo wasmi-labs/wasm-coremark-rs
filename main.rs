@@ -48,7 +48,7 @@ fn wasmtime_coremark(wasm: &[u8]) -> f32 {
 #[cfg(feature = "winch")]
 fn winch_coremark(wasm: &[u8]) -> f32 {
     wasmtime_coremark_impl(wasmtime::Strategy::Winch, wasm)
-        .with_context("Winch")
+        .context("Winch")
         .unwrap()
 }
 
