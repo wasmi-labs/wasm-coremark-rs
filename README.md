@@ -1,7 +1,6 @@
 # WASMi Coremark
 
-This repo provides script for running the [coremark-minimal.wasm][0] using 
-wasmtime and wasmi.
+This repo provides script for running the [coremark-minimal.wasm][0] using a variety of Wasm runtimes.
 
 ## Usage
 
