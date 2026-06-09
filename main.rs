@@ -193,12 +193,10 @@ fn main() {
         )
     };
     let coremark_wasm = include_bytes!("coremark-minimal.wasm");
-
     match args.len() {
         1 => run_all(coremark_wasm),
         2 => {
             let engine = args[1].as_str();
-
             println!(
                 "Running Coremark using {} ... [should take 12..20 seconds]",
                 engine
