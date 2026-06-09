@@ -5,7 +5,7 @@ fn clock_ms() -> u32 {
     use std::time::Instant;
     static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
     let elapsed = STARTED.get_or_init(Instant::now).elapsed();
-    std::println!("clock_ms(): {elapsed:.2?}");
+    std::println!(" .. {elapsed:.2?}");
     elapsed.as_millis() as u32
 }
 
