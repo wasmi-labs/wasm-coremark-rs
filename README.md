@@ -24,7 +24,7 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 | Wasmtime | `v45`           | JIT         | 30686 |
 | Winch    | `v45`           | JIT         | 12846 |
 | Wasm3    | `v0.5`          | Interpreter |  2919 |
-| Wasmi    | `v2.0.0-beta.3` | Interpreter |  2382 |
+| Wasmi    | `v2.0.0-beta.3` | Interpreter |  2475 |
 | Stitch   | `v0.1`          | Interpreter |  2223 |
 | Wasmi    | `v1.0.9`        | Interpreter |  1972 |
 | Pulley   | `v45`           | Interpreter |  1710 |
