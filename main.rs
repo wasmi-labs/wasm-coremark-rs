@@ -184,14 +184,20 @@ fn run_all(wasm: &[u8]) {
     }
 }
 
+#[allow(clippy::print_literal)]
+fn help(args: &[String]) {
+    println!(
+        "Usage: {} [<WASM_RUNTIME>]\n\n{}\n{}\n{}\n{}",
+        args[0],
+        "WASM_RUNTIME: The WebAssembly runtime with which Coremark is run.",
+        "              All available runners are used if the argument is not provided.",
+        "",
+        "              Possible Values: wasmtime, winch, pulley, wasmi, wasmi-v1, stitch, wasm3",
+    )
+}
+
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
-    let help = || {
-        println!(
-            "usage: {} [wasmtime|winch|pulley|wasm3|wasmi|wasmi-v1|stitch: string]",
-            args[0]
-        )
-    };
     let coremark_wasm = include_bytes!("coremark-minimal.wasm");
     match args.len() {
         1 => run_all(coremark_wasm),
@@ -216,11 +222,11 @@ fn main() {
                 "stitch" => stitch_coremark,
                 #[cfg(feature = "wasm3")]
                 "wasm3" => wasm3_coremark,
-                _ => return help(),
+                _ => return help(&args),
             };
             let score = runtime(coremark_wasm);
             println!(" - Score: {score}");
         }
-        _ => help(),
+        _ => help(&args),
     }
 }
