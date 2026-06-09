@@ -5,7 +5,6 @@ fn clock_ms() -> u32 {
     use std::time::Instant;
     static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
     let elapsed = STARTED.get_or_init(Instant::now).elapsed();
-    std::println!(" .. {elapsed:.2?}");
     elapsed.as_millis() as u32
 }
 
@@ -201,7 +200,7 @@ fn main() {
             let engine = args[1].as_str();
 
             println!(
-                "Running Coremark 1.0 using {}... [should take 12..20 seconds]",
+                "Running Coremark using {} ... [should take 12..20 seconds]",
                 engine
             );
             let runtime = match engine {
@@ -221,8 +220,8 @@ fn main() {
                 "wasm3" => wasm3_coremark,
                 _ => return help(),
             };
-            let result = runtime(coremark_wasm);
-            println!("Result: {result}");
+            let score = runtime(coremark_wasm);
+            println!(" - Score: {score}");
         }
         _ => help(),
     }
