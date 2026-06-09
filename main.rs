@@ -154,6 +154,37 @@ fn wasm3_coremark(wasm: &[u8]) -> f32 {
         .expect("Wasm3: failed to call \"run\" function")
 }
 
+fn run_all(wasm: &[u8]) {
+    type CoremarkRunner = fn(&[u8]) -> f32;
+    let mut scores = Vec::new();
+    let runtimes: [(&str, CoremarkRunner); _] = [
+        #[cfg(feature = "wasmtime")]
+        ("Wasmtime v45", wasmtime_coremark),
+        #[cfg(feature = "winch")]
+        ("Winch v45", winch_coremark),
+        #[cfg(feature = "pulley")]
+        ("Pulley v45", pulley_coremark),
+        #[cfg(feature = "wasmi")]
+        ("Wasmi v2", wasmi_coremark),
+        #[cfg(feature = "wasmi-v1")]
+        ("Wasmi v1", wasmi_v1_coremark),
+        #[cfg(feature = "stitch")]
+        ("Stitch", stitch_coremark),
+        #[cfg(feature = "wasm3")]
+        ("Wasm3", wasm3_coremark),
+    ];
+    for (name, runtime) in runtimes {
+        println!("Running Coremark using {name} ...");
+        let score = runtime(wasm);
+        scores.push((name, score));
+        println!(" - Score: {score}\n")
+    }
+    println!("Scores");
+    for (name, score) in scores {
+        println!(" - {name}: \t{score}");
+    }
+}
+
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
     let help = || {
@@ -165,6 +196,7 @@ fn main() {
     let coremark_wasm = include_bytes!("coremark-minimal.wasm");
 
     match args.len() {
+        1 => run_all(coremark_wasm),
         2 => {
             let engine = args[1].as_str();
 
