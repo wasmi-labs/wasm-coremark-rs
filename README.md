@@ -28,6 +28,7 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 | Stitch   | `v0.1`          | Interpreter |  2223 |
 | Wasmi    | `v1.0.9`        | Interpreter |  1972 |
 | Pulley   | `v45`           | Interpreter |  1710 |
+| Tinywasm | `v0.9`          | Interpreter |   937 |
 
 The `coremark-minimal.wasm` we are using here does not produce text output like [coremark][1], just the final test result. 
 

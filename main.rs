@@ -153,6 +153,26 @@ fn wasm3_coremark(wasm: &[u8]) -> f32 {
         .expect("Wasm3: failed to call \"run\" function")
 }
 
+#[cfg(feature = "tinywasm")]
+fn tinywasm_coremark(wasm: &[u8]) -> f32 {
+    let mut store = tinywasm::Store::default();
+    let mut imports = tinywasm::Imports::new();
+    imports.define(
+        "env",
+        "clock_ms",
+        tinywasm::HostFunction::from(&mut store, |_ctx, _arg: ()| Ok(clock_ms() as i32)),
+    );
+    let module = tinywasm::parse_bytes(wasm)
+        .expect("Tinywasm: failed to compile and validate coremark Wasm binary");
+    let instance = tinywasm::ModuleInstance::instantiate(&mut store, &module, Some(imports))
+        .expect("Tinywasm: failed to instantiate Wasm module");
+    instance
+        .func::<(), f32>(&store, "run")
+        .expect("Tinywasm: could not find \"run\" function export")
+        .call(&mut store, ())
+        .expect("Tinywasm: failed to execute \"run\" function")
+}
+
 fn run_all(wasm: &[u8]) {
     type CoremarkRunner = fn(&[u8]) -> f32;
     let mut scores = Vec::new();
@@ -171,6 +191,8 @@ fn run_all(wasm: &[u8]) {
         ("Stitch", stitch_coremark),
         #[cfg(feature = "wasm3")]
         ("Wasm3", wasm3_coremark),
+        #[cfg(feature = "tinywasm")]
+        ("Tinywasm", tinywasm_coremark),
     ];
     for (name, runtime) in runtimes {
         println!("Running Coremark using {name} ...");
@@ -222,6 +244,8 @@ fn main() {
                 "stitch" => stitch_coremark,
                 #[cfg(feature = "wasm3")]
                 "wasm3" => wasm3_coremark,
+                #[cfg(feature = "tinywasm")]
+                "tinywasm" => tinywasm_coremark,
                 _ => return help(&args),
             };
             let score = runtime(coremark_wasm);

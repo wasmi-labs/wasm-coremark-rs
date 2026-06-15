@@ -1249,6 +1249,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "tinywasm"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40aa70865e013d73d27457b1cc38271f4a614667629d24e1c9ae85376447de05"
+dependencies = [
+ "libm",
+ "tinywasm-parser",
+ "tinywasm-types",
+]
+
+[[package]]
+name = "tinywasm-parser"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d4ac3155470d7bfb5c93e7d15fde9ef3ff1ea4e965e2e92b50b7ef6b9605eb3b"
+dependencies = [
+ "tinywasm-types",
+ "wasmparser 0.248.0",
+]
+
+[[package]]
+name = "tinywasm-types"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18a4e0f93ea96e2ba7a3304e3677458c48a79b65e9c7f96a4770214e166dbeb4"
+dependencies = [
+ "postcard",
+ "serde",
+]
+
+[[package]]
 name = "toml"
 version = "0.9.12+spec-1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1507,6 +1538,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "makepad-stitch",
+ "tinywasm",
  "wasm3",
  "wasmi 1.1.0",
  "wasmi 2.0.0-beta.2",
