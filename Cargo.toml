@@ -17,7 +17,7 @@ anyhow = "1"
 
 [dependencies.wasmi]
 git = "https://github.com/wasmi-labs/wasmi"
-branch = "rf-accumulator-based-interpreter-arch"
+branch = "main"
 default-features = false
 optional = true
 

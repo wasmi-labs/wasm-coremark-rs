@@ -1523,7 +1523,7 @@ dependencies = [
 [[package]]
 name = "wasmi"
 version = "2.0.0-beta.2"
-source = "git+https://github.com/wasmi-labs/wasmi?branch=rf-accumulator-based-interpreter-arch#d95d2f03a953ce1b78f6fb414f1d8dbc53d0272e"
+source = "git+https://github.com/wasmi-labs/wasmi?branch=main#fdd4689ef5a040765d04c020aa9412c008a6ba49"
 dependencies = [
  "spin",
  "wasmi_collections 2.0.0-beta.2",
@@ -1557,7 +1557,7 @@ dependencies = [
 [[package]]
 name = "wasmi_collections"
 version = "2.0.0-beta.2"
-source = "git+https://github.com/wasmi-labs/wasmi?branch=rf-accumulator-based-interpreter-arch#d95d2f03a953ce1b78f6fb414f1d8dbc53d0272e"
+source = "git+https://github.com/wasmi-labs/wasmi?branch=main#fdd4689ef5a040765d04c020aa9412c008a6ba49"
 
 [[package]]
 name = "wasmi_core"
@@ -1571,7 +1571,7 @@ dependencies = [
 [[package]]
 name = "wasmi_core"
 version = "2.0.0-beta.2"
-source = "git+https://github.com/wasmi-labs/wasmi?branch=rf-accumulator-based-interpreter-arch#d95d2f03a953ce1b78f6fb414f1d8dbc53d0272e"
+source = "git+https://github.com/wasmi-labs/wasmi?branch=main#fdd4689ef5a040765d04c020aa9412c008a6ba49"
 dependencies = [
  "libm",
 ]
@@ -1588,7 +1588,7 @@ dependencies = [
 [[package]]
 name = "wasmi_ir"
 version = "2.0.0-beta.2"
-source = "git+https://github.com/wasmi-labs/wasmi?branch=rf-accumulator-based-interpreter-arch#d95d2f03a953ce1b78f6fb414f1d8dbc53d0272e"
+source = "git+https://github.com/wasmi-labs/wasmi?branch=main#fdd4689ef5a040765d04c020aa9412c008a6ba49"
 dependencies = [
  "wasmi_core 2.0.0-beta.2",
 ]
