@@ -35,6 +35,15 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 | Pulley   | `v45`           | Interpreter |  1786 |
 | Tinywasm | `v0.9`          | Interpreter |   937 |
 
+### Scores (Wasmi Configs)
+
+| `portable-dispatch` | `indirect-dispatch` | Score |
+|:-------------------:|:-------------------:|------:|
+| ❌                  | ❌                  |  2658 |
+| ❌                  | ✅                  |  2337 |
+| ✅                  | ❌                  |  1070 |
+| ✅                  | ✅                  |  1686 |
+
 The `coremark-minimal.wasm` we are using here does not produce text output like [coremark][1], just the final test result. 
 
 ## LICENSE
