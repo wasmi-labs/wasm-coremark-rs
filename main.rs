@@ -178,11 +178,11 @@ fn run_all(wasm: &[u8]) {
     let mut scores = Vec::new();
     let runtimes: [(&str, CoremarkRunner); _] = [
         #[cfg(feature = "wasmtime")]
-        ("Wasmtime v45", wasmtime_coremark),
+        ("Wasmtime v46", wasmtime_coremark),
         #[cfg(feature = "winch")]
-        ("Winch v45", winch_coremark),
+        ("Winch v46", winch_coremark),
         #[cfg(feature = "pulley")]
-        ("Pulley v45", pulley_coremark),
+        ("Pulley v46", pulley_coremark),
         #[cfg(feature = "wasmi")]
         ("Wasmi v2", wasmi_coremark),
         #[cfg(feature = "wasmi-v1")]

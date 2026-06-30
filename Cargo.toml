@@ -9,7 +9,7 @@ name = "bm"
 path = "main.rs"
 
 [dependencies]
-wasmtime = { version = "45.0.0", optional = true }
+wasmtime = { version = "46.0.0", optional = true }
 makepad-stitch = { version = "0.1", optional = true }
 wasmi-v1 = { package = "wasmi", version = "1.0.9", optional = true }
 tinywasm = { version = "0.9", default-features = false, features = ["std", "archive", "parser"], optional = true }
