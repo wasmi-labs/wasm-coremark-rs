@@ -28,10 +28,10 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 |:---------|----------------:|:-----------:|------:|
 | Wasmtime | `v46`           | JIT         | 30086 |
 | Winch    | `v46`           | JIT         | 13598 |
-| Wasm3    | `v0.5`          | Interpreter |  2919 |
-| Wasmi    | `v2.0.0-beta.4` | Interpreter |  2722 |
-| Stitch   | `v0.1`          | Interpreter |  2228 |
-| Wasmi    | `v1.0.9`        | Interpreter |  2027 |
+| Wasm3    | `v0.5`          | Interpreter |  2825 |
+| Wasmi    | `v2.0.0-beta.4` | Interpreter |  2802 |
+| Stitch   | `v0.1`          | Interpreter |  2241 |
+| Wasmi    | `v1.0.9`        | Interpreter |  2031 |
 | Pulley   | `v46`           | Interpreter |  1786 |
 | Tinywasm | `v0.9`          | Interpreter |   937 |
 
@@ -39,10 +39,10 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 
 | `portable-dispatch` | `indirect-dispatch` | Score |
 |:-------------------:|:-------------------:|------:|
-| ❌                  | ❌                  |  2722 |
-| ❌                  | ✅                  |  2337 |
-| ✅                  | ❌                  |  1070 |
-| ✅                  | ✅                  |  1707 |
+| ❌                  | ❌                  |  2802 |
+| ❌                  | ✅                  |  2357 |
+| ✅                  | ❌                  |  1133 |
+| ✅                  | ✅                  |  1764 |
 
 The `coremark-minimal.wasm` we are using here does not produce text output like [coremark][1], just the final test result. 
 
