@@ -28,7 +28,7 @@ features = ["build-bindgen"]
 optional = true
 
 [profile.release]
-lto = "thin"
+lto = "fat"
 codegen-units = 1
 
 [features]
