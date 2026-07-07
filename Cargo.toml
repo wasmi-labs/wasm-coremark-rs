@@ -27,6 +27,16 @@ branch = "rf-fix-wasm3-rs"
 features = ["build-bindgen"]
 optional = true
 
+[dependencies.wamr-rust-sdk]
+git = "https://github.com/robbepop/wamr-rust-sdk.git"
+branch = "rf-no-wamrc"
+optional = true
+
+[dependencies.wamr-sys]
+git = "https://github.com/robbepop/wamr-rust-sdk.git"
+branch = "rf-no-wamrc"
+optional = true
+
 [profile.release]
 lto = "fat"
 codegen-units = 1
@@ -41,3 +51,4 @@ wasmtime = ["dep:wasmtime"]
 winch = ["dep:wasmtime", "wasmtime/winch"]
 pulley = ["dep:wasmtime", "wasmtime/pulley"]
 tinywasm = ["dep:tinywasm"]
+wamr = ["dep:wamr-rust-sdk", "dep:wamr-sys"]
