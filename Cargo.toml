@@ -37,6 +37,12 @@ git = "https://github.com/robbepop/wamr-rust-sdk.git"
 branch = "rf-no-wamrc"
 optional = true
 
+[dependencies.wasmedge-sdk]
+version = "0.14"
+default-features = false
+features = ["standalone"]
+optional = true
+
 [profile.release]
 lto = "fat"
 codegen-units = 1
@@ -52,3 +58,4 @@ winch = ["dep:wasmtime", "wasmtime/winch"]
 pulley = ["dep:wasmtime", "wasmtime/pulley"]
 tinywasm = ["dep:tinywasm"]
 wamr = ["dep:wamr-rust-sdk", "dep:wamr-sys"]
+wasmedge = ["dep:wasmedge-sdk"]
