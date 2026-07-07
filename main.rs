@@ -314,7 +314,7 @@ fn help(args: &[String]) {
         "WASM_RUNTIME: The WebAssembly runtime with which Coremark is run.",
         "              All available runners are used if the argument is not provided.",
         "",
-        "              Possible Values: wasmtime, winch, pulley, wasmi, wasmi-v1, stitch, wasm3, tinywasm",
+        "              Possible Values: wasmtime, winch, pulley, wasmi, wasmi-v1, stitch, wasm3, tinywasm, wamr, wasmedge",
     )
 }
 

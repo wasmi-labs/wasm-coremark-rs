@@ -10,15 +10,15 @@ Usage: target/debug/bm [<WASM_RUNTIME>]
 WASM_RUNTIME: The WebAssembly runtime with which Coremark is run.
               All available runners are used if the argument is not provided.
 
-              Possible Values: wasmtime, winch, pulley, wasmi, wasmi-v1, stitch, wasm3, tinywasm
+              Possible Values: wasmtime, winch, pulley, wasmi, wasmi-v1, stitch, wasm3, tinywasm, wamr, wasmedge
 ```
 
 ## Create Features
 
-The Wasmtime dependencies are disabled by default to keep compiled times down.  
+The Wasmtime, WAMR and WasmEdge dependencies are disabled by default to keep compiled times down.  
 Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate feature
 
-**Example:** `cargo run --release -F wasmtime`.
+**Example:** `cargo run --release -F wasmtime`
 
 ## CoreMark
 
