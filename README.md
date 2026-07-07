@@ -29,9 +29,9 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 | Wasmtime Cranelift | `v46`           | JIT         | 30086 |
 | Wasmtime Winch     | `v46`           | JIT         | 13598 |
 | Wasm3              | `v0.5`          | Interpreter |  2825 |
-| Wasmi              | `v2.0.0-beta.5` | Interpreter |  2802 |
+| Wasmi v2           | `v2.0.0-beta.5` | Interpreter |  2802 |
 | Stitch             | `v0.1`          | Interpreter |  2241 |
-| Wasmi              | `v1.0.9`        | Interpreter |  2031 |
+| Wasmi v1           | `v1.0.9`        | Interpreter |  2031 |
 | Wasmtime Pulley    | `v46`           | Interpreter |  1786 |
 | WAMR (fast)        | `v2.3`          | Interpreter |  1420 |
 | Tinywasm           | `v0.9`          | Interpreter |   937 |
