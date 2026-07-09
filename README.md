@@ -41,7 +41,7 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 
 | `portable-dispatch` | `indirect-dispatch` | Score |
 |:-------------------:|:-------------------:|------:|
-| ❌                  | ❌                  |  2802 |
+| ❌                  | ❌                  |  2820 |
 | ❌                  | ✅                  |  2357 |
 | ✅                  | ❌                  |  1133 |
 | ✅                  | ✅                  |  1764 |
