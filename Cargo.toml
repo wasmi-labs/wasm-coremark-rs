@@ -6,7 +6,7 @@ edition = "2024"
 
 [[bin]]
 name = "bm"
-path = "main.rs"
+path = "src/main.rs"
 
 [dependencies]
 wasmtime = { version = "46.0.0", optional = true }
