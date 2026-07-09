@@ -451,7 +451,7 @@ fn help(args: &[String]) {
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
-    let coremark_wasm = include_bytes!("coremark-minimal.wasm");
+    let coremark_wasm = include_bytes!("coremark-minimal-mvp.wasm");
     match args.len() {
         1 => run_all(coremark_wasm),
         2 => {
