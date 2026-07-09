@@ -1,5 +1,7 @@
 #[cfg(feature = "stitch")]
 mod stitch;
+#[cfg(feature = "wasm3")]
+mod wasm3;
 #[cfg(feature = "wasmi-v1")]
 mod wasmi_v1;
 #[cfg(feature = "wasmi")]
@@ -25,6 +27,9 @@ use self::wasmtime::pulley_coremark;
 #[cfg(feature = "stitch")]
 use self::stitch::stitch_coremark;
 
+#[cfg(feature = "wasm3")]
+use self::wasm3::wasm3_coremark;
+
 // `spacewasm` is `no_std` and links its internal `Vec`/`Rc`/`InnerVec` against
 // `extern "C"` allocation hooks (`__spacewasm_alloc` etc.) that the embedder
 // must provide exactly once. This macro generates them — it is *not* Rust's
@@ -40,26 +45,6 @@ fn clock_ms() -> u32 {
     static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
     let elapsed = STARTED.get_or_init(Instant::now).elapsed();
     elapsed.as_millis() as u32
-}
-
-#[cfg(feature = "wasm3")]
-fn wasm3_coremark(wasm: &[u8]) -> f32 {
-    use wasm3::{Environment, Module};
-    let env = Environment::new().expect("Wasm3: failed to create execution environment");
-    let rt = env
-        .create_runtime(2048)
-        .expect("Wasm3: failed to create runtime");
-    let mut module = rt
-        .load_module(Module::parse(&env, wasm).expect("Wasm3: failed to parse Wasm module"))
-        .expect("Wasm: failed to parse coremark Wasm module");
-    module
-        .link_closure::<(), u32, _>("env", "clock_ms", |_ctx, _args| Ok(clock_ms()))
-        .expect("Wasm3: failed to link \"clock_ms\" function");
-    module
-        .find_function::<(), f32>("run")
-        .expect("Wasm3: failed to find exported \"run\" function in Wasm module instance")
-        .call()
-        .expect("Wasm3: failed to call \"run\" function")
 }
 
 #[cfg(feature = "tinywasm")]
