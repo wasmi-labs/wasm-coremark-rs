@@ -1,54 +1,6 @@
-#[cfg(feature = "spacewasm")]
-mod spacewasm;
-#[cfg(feature = "stitch")]
-mod stitch;
-#[cfg(feature = "tinywasm")]
-mod tinywasm;
-#[cfg(feature = "wamr")]
-mod wamr;
-#[cfg(feature = "wasm3")]
-mod wasm3;
-#[cfg(feature = "wasmedge")]
-mod wasmedge;
-#[cfg(feature = "wasmi-v1")]
-mod wasmi_v1;
-#[cfg(feature = "wasmi")]
-mod wasmi_v2;
-#[cfg(any(feature = "wasmtime", feature = "winch", feature = "pulley"))]
-mod wasmtime;
+mod runtimes;
 
-#[cfg(feature = "wasmi-v1")]
-use self::wasmi_v1::wasmi_v1_coremark;
-
-#[cfg(feature = "wasmi")]
-use self::wasmi_v2::wasmi_coremark;
-
-#[cfg(feature = "wasmtime")]
-use self::wasmtime::wasmtime_coremark;
-
-#[cfg(feature = "winch")]
-use self::wasmtime::winch_coremark;
-
-#[cfg(feature = "pulley")]
-use self::wasmtime::pulley_coremark;
-
-#[cfg(feature = "stitch")]
-use self::stitch::stitch_coremark;
-
-#[cfg(feature = "wasm3")]
-use self::wasm3::wasm3_coremark;
-
-#[cfg(feature = "tinywasm")]
-use self::tinywasm::tinywasm_coremark;
-
-#[cfg(feature = "wamr")]
-use self::wamr::wamr_coremark;
-
-#[cfg(feature = "wasmedge")]
-use self::wasmedge::wasmedge_coremark;
-
-#[cfg(feature = "spacewasm")]
-use self::spacewasm::spacewasm_coremark;
+use self::runtimes::*;
 
 fn clock_ms() -> u32 {
     use std::time::Instant;
