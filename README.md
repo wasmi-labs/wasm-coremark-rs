@@ -35,6 +35,7 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 | Wasmtime Pulley    | `v46`           | Interpreter |  1786 |
 | WAMR (fast)        | `v2.3`          | Interpreter |  1420 |
 | Tinywasm           | `v0.9`          | Interpreter |   940 |
+| SpaceWasm          | `v0.1`          | Interpreter |   440 |
 | WasmEdge           | `v0.14`         | Interpreter |   313 |
 
 ### Scores (Wasmi Configs)
