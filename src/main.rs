@@ -2,6 +2,8 @@
 mod wasmi_v1;
 #[cfg(feature = "wasmi")]
 mod wasmi_v2;
+#[cfg(any(feature = "wasmtime", feature = "winch", feature = "pulley"))]
+mod wasmtime;
 
 #[cfg(feature = "wasmi-v1")]
 use self::wasmi_v1::wasmi_v1_coremark;
@@ -9,8 +11,14 @@ use self::wasmi_v1::wasmi_v1_coremark;
 #[cfg(feature = "wasmi")]
 use self::wasmi_v2::wasmi_coremark;
 
-#[cfg(any(feature = "wasmtime", feature = "winch"))]
-use anyhow::Context as _;
+#[cfg(feature = "wasmtime")]
+use self::wasmtime::wasmtime_coremark;
+
+#[cfg(feature = "winch")]
+use self::wasmtime::winch_coremark;
+
+#[cfg(feature = "pulley")]
+use self::wasmtime::pulley_coremark;
 
 // `spacewasm` is `no_std` and links its internal `Vec`/`Rc`/`InnerVec` against
 // `extern "C"` allocation hooks (`__spacewasm_alloc` etc.) that the embedder
@@ -27,73 +35,6 @@ fn clock_ms() -> u32 {
     static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
     let elapsed = STARTED.get_or_init(Instant::now).elapsed();
     elapsed.as_millis() as u32
-}
-
-pub enum WasmtimeBackend {
-    Wasmtime,
-    Winch,
-    Pulley,
-}
-
-#[cfg(any(feature = "wasmtime", feature = "winch", feature = "pulley"))]
-fn wasmtime_coremark_impl(backend: WasmtimeBackend, wasm: &[u8]) -> anyhow::Result<f32> {
-    let mut config = wasmtime::Config::default();
-    let strategy = match backend {
-        WasmtimeBackend::Winch => wasmtime::Strategy::Winch,
-        WasmtimeBackend::Pulley | WasmtimeBackend::Wasmtime => wasmtime::Strategy::Cranelift,
-    };
-    config.strategy(strategy);
-    if matches!(backend, WasmtimeBackend::Pulley) {
-        config
-            .target("pulley64")
-            .map_err(anyhow::Error::from)
-            .context("failed to set target to `pulley64`")?;
-    }
-    let engine = wasmtime::Engine::new(&config)
-        .map_err(anyhow::Error::from)
-        .context("failed to create engine")?;
-    let mut store = <wasmtime::Store<()>>::new(&engine, ());
-    let mut linker = wasmtime::Linker::new(store.engine());
-    linker
-        .func_wrap("env", "clock_ms", clock_ms)
-        .map_err(anyhow::Error::from)
-        .context("failed to define `clock_ms` host function")?;
-    let module = wasmtime::Module::new(store.engine(), wasm)
-        .map_err(anyhow::Error::from)
-        .context("failed to compile and validate coremark Wasm binary")?;
-    let run = linker
-        .instantiate(&mut store, &module)
-        .map_err(anyhow::Error::from)
-        .context("failed to instantiate coremark Wasm module")?
-        .get_typed_func::<(), f32>(&mut store, "run")
-        .map_err(anyhow::Error::from)
-        .context("could not find \"run\" function export")?;
-    let result = run
-        .call(&mut store, ())
-        .map_err(anyhow::Error::from)
-        .context("failed to execute \"run\" function")?;
-    Ok(result)
-}
-
-#[cfg(feature = "wasmtime")]
-fn wasmtime_coremark(wasm: &[u8]) -> f32 {
-    wasmtime_coremark_impl(WasmtimeBackend::Wasmtime, wasm)
-        .context("Wasmtime")
-        .unwrap()
-}
-
-#[cfg(feature = "winch")]
-fn winch_coremark(wasm: &[u8]) -> f32 {
-    wasmtime_coremark_impl(WasmtimeBackend::Winch, wasm)
-        .context("Winch")
-        .unwrap()
-}
-
-#[cfg(feature = "pulley")]
-fn pulley_coremark(wasm: &[u8]) -> f32 {
-    wasmtime_coremark_impl(WasmtimeBackend::Pulley, wasm)
-        .context("Pulley")
-        .unwrap()
 }
 
 #[cfg(feature = "stitch")]
