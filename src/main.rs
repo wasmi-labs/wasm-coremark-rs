@@ -1,5 +1,7 @@
 #[cfg(feature = "stitch")]
 mod stitch;
+#[cfg(feature = "tinywasm")]
+mod tinywasm;
 #[cfg(feature = "wasm3")]
 mod wasm3;
 #[cfg(feature = "wasmi-v1")]
@@ -30,6 +32,9 @@ use self::stitch::stitch_coremark;
 #[cfg(feature = "wasm3")]
 use self::wasm3::wasm3_coremark;
 
+#[cfg(feature = "tinywasm")]
+use self::tinywasm::tinywasm_coremark;
+
 // `spacewasm` is `no_std` and links its internal `Vec`/`Rc`/`InnerVec` against
 // `extern "C"` allocation hooks (`__spacewasm_alloc` etc.) that the embedder
 // must provide exactly once. This macro generates them — it is *not* Rust's
@@ -45,26 +50,6 @@ fn clock_ms() -> u32 {
     static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
     let elapsed = STARTED.get_or_init(Instant::now).elapsed();
     elapsed.as_millis() as u32
-}
-
-#[cfg(feature = "tinywasm")]
-fn tinywasm_coremark(wasm: &[u8]) -> f32 {
-    let mut store = tinywasm::Store::default();
-    let mut imports = tinywasm::Imports::new();
-    imports.define(
-        "env",
-        "clock_ms",
-        tinywasm::HostFunction::from(&mut store, |_ctx, _arg: ()| Ok(clock_ms() as i32)),
-    );
-    let module = tinywasm::parse_bytes(wasm)
-        .expect("Tinywasm: failed to compile and validate coremark Wasm binary");
-    let instance = tinywasm::ModuleInstance::instantiate(&mut store, &module, Some(imports))
-        .expect("Tinywasm: failed to instantiate Wasm module");
-    instance
-        .func::<(), f32>(&store, "run")
-        .expect("Tinywasm: could not find \"run\" function export")
-        .call(&mut store, ())
-        .expect("Tinywasm: failed to execute \"run\" function")
 }
 
 #[cfg(feature = "wamr")]

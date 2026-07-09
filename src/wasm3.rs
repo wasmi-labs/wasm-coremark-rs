@@ -1,5 +1,5 @@
-use wasm3::{Environment, Module};
 use crate::clock_ms;
+use wasm3::{Environment, Module};
 
 pub fn wasm3_coremark(wasm: &[u8]) -> f32 {
     let env = Environment::new().expect("Wasm3: failed to create execution environment");
