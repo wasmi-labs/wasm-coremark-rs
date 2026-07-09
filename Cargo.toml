@@ -1,7 +1,7 @@
 [package]
 name = "wasmi-coremark"
 version = "0.1.0"
-authors = ["clearloop <udtrokia@gmail.com>"]
+authors = ["Robin Freyler <robinfreyler@web.de>"]
 edition = "2024"
 
 [[bin]]
