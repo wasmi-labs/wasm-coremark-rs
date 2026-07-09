@@ -9,6 +9,49 @@ fn clock_ms() -> u32 {
     elapsed.as_millis() as u32
 }
 
+fn main() {
+    let args = std::env::args().collect::<Vec<String>>();
+    let coremark_wasm = include_bytes!("../coremark-minimal-mvp.wasm");
+    match args.len() {
+        1 => run_all(coremark_wasm),
+        2 => {
+            let engine = args[1].as_str();
+            println!(
+                "Running Coremark using {} ... [should take 12..20 seconds]",
+                engine
+            );
+            let runtime = match engine {
+                #[cfg(feature = "wasmtime")]
+                "wasmtime" => wasmtime_coremark,
+                #[cfg(feature = "winch")]
+                "winch" => winch_coremark,
+                #[cfg(feature = "pulley")]
+                "pulley" => pulley_coremark,
+                #[cfg(feature = "wasmi")]
+                "wasmi" => wasmi_coremark,
+                #[cfg(feature = "wasmi-v1")]
+                "wasmi-v1" => wasmi_v1_coremark,
+                #[cfg(feature = "stitch")]
+                "stitch" => stitch_coremark,
+                #[cfg(feature = "wasm3")]
+                "wasm3" => wasm3_coremark,
+                #[cfg(feature = "tinywasm")]
+                "tinywasm" => tinywasm_coremark,
+                #[cfg(feature = "wamr")]
+                "wamr" => wamr_coremark,
+                #[cfg(feature = "wasmedge")]
+                "wasmedge" => wasmedge_coremark,
+                #[cfg(feature = "spacewasm")]
+                "spacewasm" => spacewasm_coremark,
+                _ => return help(&args),
+            };
+            let score = runtime(coremark_wasm);
+            println!(" - Score: {score}");
+        }
+        _ => help(&args),
+    }
+}
+
 fn run_all(wasm: &[u8]) {
     type CoremarkRunner = fn(&[u8]) -> f32;
     let mut scores = Vec::new();
@@ -58,47 +101,4 @@ fn help(args: &[String]) {
         "",
         "              Possible Values: wasmtime, winch, pulley, wasmi, wasmi-v1, stitch, wasm3, tinywasm, wamr, wasmedge, spacewasm",
     )
-}
-
-fn main() {
-    let args = std::env::args().collect::<Vec<String>>();
-    let coremark_wasm = include_bytes!("../coremark-minimal-mvp.wasm");
-    match args.len() {
-        1 => run_all(coremark_wasm),
-        2 => {
-            let engine = args[1].as_str();
-            println!(
-                "Running Coremark using {} ... [should take 12..20 seconds]",
-                engine
-            );
-            let runtime = match engine {
-                #[cfg(feature = "wasmtime")]
-                "wasmtime" => wasmtime_coremark,
-                #[cfg(feature = "winch")]
-                "winch" => winch_coremark,
-                #[cfg(feature = "pulley")]
-                "pulley" => pulley_coremark,
-                #[cfg(feature = "wasmi")]
-                "wasmi" => wasmi_coremark,
-                #[cfg(feature = "wasmi-v1")]
-                "wasmi-v1" => wasmi_v1_coremark,
-                #[cfg(feature = "stitch")]
-                "stitch" => stitch_coremark,
-                #[cfg(feature = "wasm3")]
-                "wasm3" => wasm3_coremark,
-                #[cfg(feature = "tinywasm")]
-                "tinywasm" => tinywasm_coremark,
-                #[cfg(feature = "wamr")]
-                "wamr" => wamr_coremark,
-                #[cfg(feature = "wasmedge")]
-                "wasmedge" => wasmedge_coremark,
-                #[cfg(feature = "spacewasm")]
-                "spacewasm" => spacewasm_coremark,
-                _ => return help(&args),
-            };
-            let score = runtime(coremark_wasm);
-            println!(" - Score: {score}");
-        }
-        _ => help(&args),
-    }
 }
