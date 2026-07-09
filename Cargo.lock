@@ -1874,6 +1874,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "spacewasm"
+version = "0.0.0"
+source = "git+https://github.com/nasa/spacewasm.git#63288b3c1a852e222a2906296276fb609f6f37e3"
+dependencies = [
+ "libm",
+]
+
+[[package]]
+name = "spacewasm_util"
+version = "0.0.0"
+source = "git+https://github.com/nasa/spacewasm.git#63288b3c1a852e222a2906296276fb609f6f37e3"
+dependencies = [
+ "spacewasm",
+]
+
+[[package]]
 name = "spin"
 version = "0.9.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2489,6 +2505,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "makepad-stitch",
+ "spacewasm",
+ "spacewasm_util",
  "tinywasm",
  "wamr-rust-sdk",
  "wamr-sys",

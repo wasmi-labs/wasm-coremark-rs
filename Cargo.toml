@@ -43,6 +43,14 @@ default-features = false
 features = ["standalone"]
 optional = true
 
+[dependencies.spacewasm]
+git = "https://github.com/nasa/spacewasm.git"
+optional = true
+
+[dependencies.spacewasm_util]
+git = "https://github.com/nasa/spacewasm.git"
+optional = true
+
 [profile.release]
 lto = "fat"
 codegen-units = 1
@@ -59,3 +67,4 @@ pulley = ["dep:wasmtime", "wasmtime/pulley"]
 tinywasm = ["dep:tinywasm"]
 wamr = ["dep:wamr-rust-sdk", "dep:wamr-sys"]
 wasmedge = ["dep:wasmedge-sdk"]
+spacewasm = ["dep:spacewasm", "dep:spacewasm_util"]
