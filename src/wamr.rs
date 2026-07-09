@@ -1,9 +1,9 @@
+use crate::clock_ms;
 use std::ffi::{CString, c_void};
 use std::ptr;
 use wamr_rust_sdk::{
     function::Function, instance::Instance, module::Module, runtime::Runtime, value::WasmValue,
 };
-use crate::clock_ms;
 
 extern "C" fn clock_ms_wamr(_exec_env: wamr_sys::wasm_exec_env_t) -> i32 {
     clock_ms() as i32
