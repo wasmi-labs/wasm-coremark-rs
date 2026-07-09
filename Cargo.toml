@@ -16,7 +16,7 @@ tinywasm = { version = "0.9", default-features = false, features = ["std", "arch
 anyhow = "1"
 
 [dependencies.wasmi]
-version = "2.0.0-beta.6"
+version = "2.0.0-beta.7"
 default-features = false
 features = ["std", "validate"]
 optional = true
