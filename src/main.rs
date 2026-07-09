@@ -45,6 +45,13 @@ use self::wamr::wamr_coremark;
 #[cfg(feature = "wasmedge")]
 use self::wasmedge::wasmedge_coremark;
 
+fn clock_ms() -> u32 {
+    use std::time::Instant;
+    static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
+    let elapsed = STARTED.get_or_init(Instant::now).elapsed();
+    elapsed.as_millis() as u32
+}
+
 // `spacewasm` is `no_std` and links its internal `Vec`/`Rc`/`InnerVec` against
 // `extern "C"` allocation hooks (`__spacewasm_alloc` etc.) that the embedder
 // must provide exactly once. This macro generates them — it is *not* Rust's
@@ -54,13 +61,6 @@ spacewasm::global_allocator!(
     spacewasm::PageAllocator<16>,
     spacewasm::PageAllocator::new(&spacewasm_util::RustSystemAllocator, 8192)
 );
-
-fn clock_ms() -> u32 {
-    use std::time::Instant;
-    static STARTED: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
-    let elapsed = STARTED.get_or_init(Instant::now).elapsed();
-    elapsed.as_millis() as u32
-}
 
 #[cfg(feature = "spacewasm")]
 fn spacewasm_coremark(wasm: &[u8]) -> f32 {
