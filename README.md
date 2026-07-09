@@ -26,17 +26,26 @@ Enable Wasmtime via `wasmtime`, Winch via `winch` and Pulley via `pulley` crate 
 
 | Runtime            | Version         | Type        | Score |
 |:-------------------|----------------:|:-----------:|------:|
-| Wasmtime Cranelift | `v46`           | JIT         | 30086 |
-| Wasmtime Winch     | `v46`           | JIT         | 13598 |
-| Wasm3              | `v0.5`          | Interpreter |  2830 |
-| Wasmi v2           | `v2.0.0-beta.7` | Interpreter |  2820 |
-| Stitch             | `v0.1`          | Interpreter |  2241 |
-| Wasmi v1           | `v1.0.9`        | Interpreter |  2034 |
-| Wasmtime Pulley    | `v46`           | Interpreter |  1786 |
-| WAMR (fast)        | `v2.3`          | Interpreter |  1420 |
-| Tinywasm           | `v0.9`          | Interpreter |   940 |
-| SpaceWasm          | `v0.1`          | Interpreter |   440 |
-| WasmEdge           | `v0.14`         | Interpreter |   313 |
+| [Wasmtime] Cranelift | `v46`           | JIT         | 30086 |
+| [Wasmtime] Winch     | `v46`           | JIT         | 13598 |
+| [Wasm3]              | `v0.5`          | Interpreter |  2830 |
+| [Wasmi] v2           | `v2.0.0-beta.7` | Interpreter |  2820 |
+| [Stitch]             | `v0.1`          | Interpreter |  2241 |
+| [Wasmi] v1           | `v1.0.9`        | Interpreter |  2034 |
+| [Wasmtime] Pulley    | `v46`           | Interpreter |  1786 |
+| [WAMR] (fast)        | `v2.3`          | Interpreter |  1420 |
+| [Tinywasm]           | `v0.9`          | Interpreter |   940 |
+| [SpaceWasm]          | `v0.1`          | Interpreter |   440 |
+| [WasmEdge]           | `v0.14`         | Interpreter |   313 |
+
+[Wasmtime]: https://github.com/bytecodealliance/wasmtime
+[Wasm3]: https://github.com/wasm3/wasm3
+[Wasmi]: https://github.com/wasmi-labs/wasmi
+[Stitch]: https://github.com/makepad/stitch
+[WAMR]: https://github.com/bytecodealliance/wasm-micro-runtime
+[Tinywasm]: https://github.com/explodingcamera/tinywasm
+[SpaceWasm]: https://github.com/nasa/spacewasm
+[WasmEdge]: https://github.com/wasmedge/wasmedge
 
 ### Scores (Wasmi Configs)
 
